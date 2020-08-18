@@ -4,12 +4,12 @@ import "gorm.io/gorm"
 
 type Item struct {
 	gorm.Model
-	Name        string
+	Name        string `gorm:"type:varchar(50)"`
 	Description string
 	Price       float32
-	CategoryID  *uint
-	Category    *ItemCategory
-	IsActive    bool `gorm:"default:true"`
+	CategoryID  uint
+	Category    ItemCategory `json:"category"`
+	IsActive    bool         `gorm:"default:true"`
 }
 
 func (e *Item) Disable() {

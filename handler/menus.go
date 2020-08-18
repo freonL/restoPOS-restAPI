@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/freonL/restoPOS-restAPI/model"
 	"github.com/gorilla/mux"
@@ -10,8 +11,21 @@ import (
 )
 
 func GetMenus(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	// var limit, offset int64
+	limit, _ := strconv.Atoi(r.FormValue("limit"))
+	offset, _ := strconv.Atoi(r.FormValue("offset"))
+	if limit <= 0 {
+		limit = 10
+	}
+
+	if offset < 0 {
+		offset = 0
+	}
+	// fmt.Println(limit, offset)
+
 	tbl := []model.Item{}
-	db.Find(&tbl)
+
+	db.Preload("Category").Limit(limit).Offset(offset).Find(&tbl)
 	respondJSON(w, http.StatusOK, tbl)
 }
 

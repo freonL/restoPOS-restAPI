@@ -8,5 +8,12 @@ import (
 func DBMigrate(db *gorm.DB) *gorm.DB {
 	db.AutoMigrate(&ItemCategory{})
 	db.AutoMigrate(&Item{})
+
+	db.AutoMigrate(&UserGroup{})
+	InitUserGroup(db)
+	db.AutoMigrate(&User{})
+	InitUser(db)
+	db.AutoMigrate(&TransHeader{})
+	db.AutoMigrate(&TransDetail{})
 	return db
 }
