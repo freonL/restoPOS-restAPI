@@ -9,17 +9,17 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetMenus(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	tbl := []model.Item{}
+func GetCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	tbl := []model.ItemCategory{}
 	db.Find(&tbl)
 	respondJSON(w, http.StatusOK, tbl)
 }
 
-func GetMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func GetCategory(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	id := vars["id"]
-	rec := model.Item{}
+	rec := model.ItemCategory{}
 
 	if err := db.First(&rec, id).Error; err != nil {
 		respondError(w, http.StatusNotFound, err.Error())
@@ -28,8 +28,8 @@ func GetMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, rec)
 }
 
-func CreateMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	rec := model.Item{}
+func CreateCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	rec := model.ItemCategory{}
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&rec); err != nil {
@@ -45,11 +45,11 @@ func CreateMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusCreated, rec)
 }
 
-func UpdateMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func UpdateCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	id := vars["id"]
-	rec := getMenuOr404(db, id, w, r)
+	rec := getCategoriesOr404(db, id, w, r)
 	if rec == nil {
 		return
 	}
@@ -68,11 +68,11 @@ func UpdateMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, rec)
 }
 
-func DeleteMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func DeleteCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	id := vars["id"]
-	rec := getMenuOr404(db, id, w, r)
+	rec := getCategoriesOr404(db, id, w, r)
 	if rec == nil {
 		return
 	}
@@ -83,11 +83,11 @@ func DeleteMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusNoContent, nil)
 }
 
-func DisableMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func DisableCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	id := vars["id"]
-	rec := getMenuOr404(db, id, w, r)
+	rec := getCategoriesOr404(db, id, w, r)
 
 	if rec == nil {
 		return
@@ -100,11 +100,11 @@ func DisableMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, rec)
 }
 
-func EnableMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+func EnableCategories(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	name := vars["name"]
-	rec := getMenuOr404(db, name, w, r)
+	rec := getCategoriesOr404(db, name, w, r)
 	if rec == nil {
 		return
 	}
@@ -116,9 +116,9 @@ func EnableMenu(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, rec)
 }
 
-// getMenuOr404 gets a item instance if exists, or respond the 404 error otherwise
-func getMenuOr404(db *gorm.DB, id string, w http.ResponseWriter, r *http.Request) *model.Item {
-	rec := model.Item{}
+// getCategoriesOr404 gets a item instance if exists, or respond the 404 error otherwise
+func getCategoriesOr404(db *gorm.DB, id string, w http.ResponseWriter, r *http.Request) *model.ItemCategory {
+	rec := model.ItemCategory{}
 	if err := db.First(&rec, id).Error; err != nil {
 		respondError(w, http.StatusNotFound, err.Error())
 		return nil

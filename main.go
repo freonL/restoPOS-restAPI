@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/freonL/restoPOS-restAPI/app"
@@ -23,5 +24,6 @@ func main() {
 
 	app := &app.App{}
 	app.Initialize()
+	fmt.Println("Running server on :" + port)
 	app.Run(":" + port)
 }
