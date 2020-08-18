@@ -1,23 +1,23 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"gorm.io/gorm"
 )
 
 type Item struct {
 	gorm.Model
-	Name     string        `json:"name"`
-	Desc     string        `json:"description"`
-	Category *ItemCategory `json:"category"`
-	Price    float32       `json:"price"`
-	IsActive bool          `json:"isActive"`
+	Name        string
+	Description string
+	Price       float32
+	CategoryID  *uint
+	Category    *ItemCategory
+	IsActive    bool
 }
 
 type ItemCategory struct {
 	gorm.Model
-	Name     string `json:"name"`
-	IsActive bool   `json:"isActive,omitempty" bson:",omitempty"`
+	Name     string
+	IsActive bool
 }
 
 func (e *Item) Disable() {
@@ -38,7 +38,7 @@ func (p *ItemCategory) Enable() {
 
 // DBMigrate will create and migrate the tables, and then make the some relationships if necessary
 func DBMigrate(db *gorm.DB) *gorm.DB {
-	db.AutoMigrate(&Item{})
 	db.AutoMigrate(&ItemCategory{})
+	db.AutoMigrate(&Item{})
 	return db
 }

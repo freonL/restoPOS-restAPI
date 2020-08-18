@@ -116,7 +116,7 @@ func EnableItem(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, rec)
 }
 
-// getEmployeeOr404 gets a employee instance if exists, or respond the 404 error otherwise
+// getItemOr404 gets a item instance if exists, or respond the 404 error otherwise
 func getItemOr404(db *gorm.DB, id string, w http.ResponseWriter, r *http.Request) *model.Item {
 	rec := model.Item{}
 	if err := db.First(&rec, id).Error; err != nil {
