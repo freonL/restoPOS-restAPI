@@ -15,3 +15,34 @@ func (e *ItemCategory) Disable() {
 func (p *ItemCategory) Enable() {
 	p.IsActive = true
 }
+
+func InitItemCategory(db *gorm.DB) {
+	var count int64
+	db.Model(&ItemCategory{}).Count(&count)
+	if count == 0 {
+		categories := []ItemCategory{
+			{
+				Name:     "Rice & Noodle",
+				IsActive: true,
+			},
+			{
+				Name:     "Chicken & Fish",
+				IsActive: true,
+			},
+			{
+				Name:     "Meat",
+				IsActive: true,
+			},
+			{
+				Name:     "Vegetable",
+				IsActive: true,
+			},
+			{
+				Name:     "Beverage",
+				IsActive: true,
+			},
+		}
+		db.Create(&categories)
+	}
+
+}

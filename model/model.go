@@ -7,7 +7,10 @@ import (
 // DBMigrate will create and migrate the tables, and then make the some relationships if necessary
 func DBMigrate(db *gorm.DB) *gorm.DB {
 	db.AutoMigrate(&ItemCategory{})
+	InitItemCategory(db)
+
 	db.AutoMigrate(&Item{})
+	db.AutoMigrate(&Surcharge{})
 
 	db.AutoMigrate(&UserGroup{})
 	InitUserGroup(db)
@@ -15,5 +18,6 @@ func DBMigrate(db *gorm.DB) *gorm.DB {
 	InitUser(db)
 	db.AutoMigrate(&TransHeader{})
 	db.AutoMigrate(&TransDetail{})
+	db.AutoMigrate(&TransSurcharge{})
 	return db
 }
