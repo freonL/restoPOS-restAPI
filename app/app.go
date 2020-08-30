@@ -24,9 +24,21 @@ func authHandler(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user, pass, _ := r.BasicAuth()
-		fmt.Println(user, pass)
-		fmt.Println(r.Header)
-		next.ServeHTTP(w, r)
+		// fmt.Println(user, pass)
+		// fmt.Println(r.Header)
+		if r.Method == "GET" {
+			next.ServeHTTP(w, r)
+
+		} else {
+			if user == "admin" && pass == "admin" {
+				next.ServeHTTP(w, r)
+			} else {
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(401)
+				w.Write([]byte("not Admin"))
+			}
+		}
+
 	})
 }
 
