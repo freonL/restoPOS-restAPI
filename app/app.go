@@ -20,6 +20,16 @@ type App struct {
 	DB     *gorm.DB
 }
 
+func authHandler(next http.Handler) http.Handler {
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		user, pass, _ := r.BasicAuth()
+		fmt.Println(user, pass)
+		fmt.Println(r.Header)
+		next.ServeHTTP(w, r)
+	})
+}
+
 // App initialize with predefined configuration
 func (a *App) Initialize() {
 	godotenv.Load(".env")
@@ -60,6 +70,7 @@ func (a *App) Initialize() {
 	}
 	a.DB = model.DBMigrate(db)
 	a.Router = mux.NewRouter()
+	a.Router.Use(authHandler)
 	a.setRouters()
 }
 
