@@ -10,6 +10,8 @@ func DBMigrate(db *gorm.DB) *gorm.DB {
 	InitItemCategory(db)
 
 	db.AutoMigrate(&Item{})
+	InitItem(db)
+
 	db.AutoMigrate(&Surcharge{})
 
 	db.AutoMigrate(&UserGroup{})
